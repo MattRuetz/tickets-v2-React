@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createTicket, reset } from '../features/tickets/ticketSlice';
 import Spinner from '../components/Spinner';
+import BackButton from '../components/BackButton';
 
 function NewTicket() {
     // get user from global state
@@ -16,7 +17,7 @@ function NewTicket() {
 
     const [name] = useState(user.name);
     const [email] = useState(user.email);
-    const [product, setProduct] = useState('');
+    const [product, setProduct] = useState('Windows');
     const [description, setDescription] = useState('');
 
     const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function NewTicket() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        console.log({ product, description });
         dispatch(createTicket({ product, description }));
     };
 
@@ -46,6 +48,7 @@ function NewTicket() {
 
     return (
         <>
+            <BackButton url="/" />
             <section className="heading">
                 <h1>Create New Ticket</h1>
                 <p>Please fill out the form below:</p>
