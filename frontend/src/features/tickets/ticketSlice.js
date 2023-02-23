@@ -56,6 +56,52 @@ export const getTickets = createAsyncThunk(
     }
 );
 
+// Slice Action - Get a ticket
+export const getTicket = createAsyncThunk(
+    'tickets/get',
+    async (ticketId, thunkAPI) => {
+        try {
+            // The redux toolkit's ThunkAPI lets us pull another state into this slice
+            // So we can get the token, and send it along with the API request to createTicket (protected route)
+            const token = thunkAPI.getState().auth.user.token;
+            return await ticketService.getTicket(ticketId, token);
+        } catch (error) {
+            // Check ways error could be nested
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+// Slice Action - Get a ticket
+export const closeTicket = createAsyncThunk(
+    'tickets/close',
+    async (ticketId, thunkAPI) => {
+        try {
+            // The redux toolkit's ThunkAPI lets us pull another state into this slice
+            // So we can get the token, and send it along with the API request to createTicket (protected route)
+            const token = thunkAPI.getState().auth.user.token;
+            return await ticketService.closeTicket(ticketId, token);
+        } catch (error) {
+            // Check ways error could be nested
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
 export const ticketSlice = createSlice({
     name: 'ticket',
     initialState,
@@ -90,6 +136,29 @@ export const ticketSlice = createSlice({
                 state.isError = true;
                 // payload sent by createTicket::: thunkAPI.rejectWithValue(message);
                 state.message = action.payload;
+            })
+            .addCase(getTicket.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getTicket.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.ticket = action.payload;
+            })
+            .addCase(getTicket.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                // payload sent by createTicket::: thunkAPI.rejectWithValue(message);
+                state.message = action.payload;
+            })
+            .addCase(closeTicket.fulfilled, (state, action) => {
+                state.isLoading = false;
+                // map thru to find matching ticket
+                state.tickets.map((ticket) =>
+                    ticket._id === action.payload._id
+                        ? (ticket.status = 'closed')
+                        : ticket
+                );
             });
     },
 });

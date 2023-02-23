@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 // REMEMBER that react component params are passed as objects,
 // They can be de-structed in the argument with --> {}
 function TicketItem({ ticket }) {
-    console.log(ticket);
     return (
         <div className="ticket">
             <div>{new Date(ticket.createdAt).toLocaleString('en-US')}</div>
