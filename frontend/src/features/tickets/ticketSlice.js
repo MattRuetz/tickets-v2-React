@@ -119,7 +119,7 @@ export const ticketSlice = createSlice({
             })
             .addCase(createTicket.rejected, (state, action) => {
                 state.isLoading = false;
-                state.isError = false;
+                state.isError = true;
                 // payload sent by createTicket::: thunkAPI.rejectWithValue(message);
                 state.message = action.payload;
             })

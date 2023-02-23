@@ -12,7 +12,7 @@ function NewTicket() {
 
     // deconstruct global ticket state
     const { isLoading, isError, isSuccess, message } = useSelector(
-        (state) => state.ticket
+        (state) => state.tickets
     );
 
     const [name] = useState(user.name);

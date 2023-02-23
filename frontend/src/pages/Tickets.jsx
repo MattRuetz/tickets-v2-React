@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTickets, reset } from '../features/tickets/ticketSlice';
+import {
+    getTickets,
+    reset as ticketsReset,
+} from '../features/tickets/ticketSlice';
 import Spinner from '../components/Spinner';
 import BackButton from '../components/BackButton';
 import TicketItem from '../components/TicketItem';
@@ -15,7 +18,7 @@ function Tickets() {
     useEffect(() => {
         return () => {
             if (isSuccess) {
-                dispatch(reset());
+                dispatch(ticketsReset());
             }
         };
     }, [dispatch, isSuccess]);
