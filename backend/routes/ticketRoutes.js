@@ -10,7 +10,8 @@ const {
 
 const { protect } = require('../middleware/authMiddleware');
 
-const noteRouter = require('./noteRoute');
+// Re-route into note router (so that noteRoutes can be organized in a separate file, but still on the /tickets endpoint)
+const noteRouter = require('./noteRoutes');
 router.use('/:ticketId/notes', noteRouter);
 
 router.route('/').get(protect, getTickets).post(protect, createTicket);
